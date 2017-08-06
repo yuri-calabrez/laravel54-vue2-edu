@@ -13,7 +13,7 @@ class User extends Authenticatable implements TableInterface
 
     const ROLE_ADMIN = 1;
     const ROLE_TEACHER = 2;
-    const ROLE_STUDANT = 3;
+    const ROLE_STUDENT = 3;
 
     /**
      * The attributes that are mass assignable.
@@ -33,15 +33,32 @@ class User extends Authenticatable implements TableInterface
         'password', 'remember_token',
     ];
 
+    public function userable()
+    {
+        return $this->morphTo();
+    }
+
     public static function assignEnrolment(User $user, $type)
     {
         $types = [
           self::ROLE_ADMIN => 100000,
           self::ROLE_TEACHER => 300000,
-          self::ROLE_STUDANT => 700000
+          self::ROLE_STUDENT => 700000
         ];
         $user->enrolment = $types[$type] + $user->id;
         return $user->enrolment;
+    }
+
+    public static function assingRole(User $user, $type)
+    {
+        $types = [
+            self::ROLE_ADMIN => Admin::class,
+            self::ROLE_TEACHER => Teacher::class,
+            self::ROLE_STUDENT => Studant::class
+        ];
+        $model = $types[$type];
+        $model = $model::create([]);
+        $user->userable()->associate($model);
     }
 
     public static function createFully($data)
@@ -50,6 +67,7 @@ class User extends Authenticatable implements TableInterface
         $data['password'] = bcrypt($password);
         $user = parent::create($data+['enrolment' => str_random(6)]);
         self::assignEnrolment($user, self::ROLE_ADMIN);
+        self::assingRole($user, $data['type']);
         $user->save();
         if(isset($data['send_mail'])) {
             $token = \Password::broker()->createToken($user);
