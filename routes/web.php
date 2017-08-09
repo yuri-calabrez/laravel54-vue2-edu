@@ -18,13 +18,24 @@ Route::get('/', function () {
 Route::prefix('admin')->group(function(){
     Auth::routes();
 
-    Route::group(['as' => 'admin.', 'middleware' => 'auth', 'namespace' => 'Admin\\'], function(){
+    Route::group(['prefix' => 'users', 'as' => 'admin.users.'], function(){
+        Route::name('settings.edit')->get('settings', 'Admin\UserSettingsController@edit');
+        Route::name('settings.update')->put('settings', 'Admin\UserSettingsController@update');
+    }) ;
+
+    Route::group(['as' => 'admin.', 'middleware' => ['auth', 'can:admin'], 'namespace' => 'Admin\\'], function(){
         Route::name('dashboard')->get('/dashboard', function () {
             return "Dashboard!!";
         });
        Route::group(['prefix' => 'users', 'as' => 'users.'], function(){
            Route::name('show_details')->get('show-details', 'UsersController@showDetails');
-       }) ;
+           Route::group(['prefix' => '/{user}/profile'], function(){
+              Route::name('profile.edit')->get('', 'UserProfileController@edit');
+              Route::name('profile.update')->put('', 'UserProfileController@update');
+           });
+       });
+       Route::resource('subjects', 'SubjectsController');
+       Route::resource('class_informations', 'ClassInformationsController');
        Route::resource('users', 'UsersController');
     });
 });
