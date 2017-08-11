@@ -4,7 +4,9 @@ namespace SON\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use SON\Http\Controllers\Controller;
+use SON\Http\Requests\ClassStudentRequest;
 use SON\Models\ClassInformation;
+use SON\Models\Student;
 
 class ClassStudentsController extends Controller
 {
@@ -29,9 +31,11 @@ class ClassStudentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClassStudentRequest $request, ClassInformation $class_information)
     {
-        //
+        $student = Student::find($request->get('student_id'));
+        $class_information->students()->save($student);
+        return $student;
     }
 
     /**
@@ -40,8 +44,9 @@ class ClassStudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ClassInformation $class_information, Student $student)
     {
-        //
+        $class_information->students()->detach($student->id);
+        return response()->json(['message' => "O(a) esudante {$student->user->name} foi removida da turma com sucesso!"], 200);
     }
 }

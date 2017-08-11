@@ -14,7 +14,11 @@
             </thead>
             <tbody>
             <tr v-for="student in students">
-                <td>Excluir</td>
+                <td>
+                    <button type="button" class="btn btn-danger" @click="destroy(student)">
+                        <span class="glyphicon glyphicon-trash"></span> Excluir
+                    </button>
+                </td>
                 <td>{{student.user.name}}</td>
             </tr>
             </tbody>
@@ -59,6 +63,37 @@
                 },
                 minimumInputLength: 1
             });
+            let self = this;
+            $("select[name=students]").on('select2:select', event => {
+                store.dispatch('ClassStudent/store', {
+                    studentId: event.params.data.id,
+                    classInformationId: self.classInformation
+                }).then(() => {
+                    new PNotify({
+                       title: 'Aviso',
+                       text: 'Aluno adicionado com sucesso!',
+                       styling: 'brighttheme',
+                       type: 'success'
+                    });
+                });
+            });
+        },
+        methods: {
+            destroy(student) {
+                if(confirm("Dedeja remover este aluno?")){
+                    store.dispatch('ClassStudent/destroy',{
+                        studentId: student.id,
+                        classInformationId: this.classInformation
+                    }).then(response => {
+                        new PNotify({
+                            title: 'Aviso',
+                            text: response.message,
+                            styling: 'brighttheme',
+                            type: 'success'
+                        });
+                    });
+                }
+            }
         }
     }
 </script>

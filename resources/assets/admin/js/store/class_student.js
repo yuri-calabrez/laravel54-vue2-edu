@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import 'vue-resource';
+import {ClassStudentResource} from "../services/resources";
 import ADMIN_CONFIG from '../services/adminConfig';
 
 const state = {
@@ -9,6 +9,17 @@ const state = {
 const mutations = {
     set(state, students) {
         state.students = students;
+    },
+    add(state, student) {
+       state.students.push(student);
+    },
+    destroy(state, studentId) {
+        let index = state.students.findIndex((item) => {
+           return item.id == studentId;
+        });
+        if(index != 1){
+            state.students.splice(index, 1);
+        }
     }
 };
 
@@ -18,6 +29,19 @@ const actions = {
             .then(response => {
                 context.commit('set', response.data);
             })
+    },
+    store(context, {studentId, classInformationId}) {
+        return ClassStudentResource.save({class_information: classInformationId}, {student_id: studentId})
+            .then(response => {
+                context.commit('add', response.data);
+            });
+    },
+    destroy(context, {studentId, classInformationId}) {
+        return ClassStudentResource.delete({class_information: classInformationId, student: studentId})
+            .then(response => {
+               context.commit('destroy', studentId);
+               return response.data;
+            });
     }
 };
 
