@@ -5,7 +5,7 @@
         <div class="row">
             <h3>Administração de alunos na turma</h3>
         </div>
-        <class-student></class-student>
+        <class-student class-information="{{$class_information->id}}"></class-student>
     </div>
     </div>
 @endsection

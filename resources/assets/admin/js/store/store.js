@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
-import ClassStudent from 'class_student';
+import ClassStudent from './class_student';
 
-export default Vuex.Store({
+export default new Vuex.Store({
     modules: {
         ClassStudent
     }

@@ -41,6 +41,10 @@ Route::prefix('admin')->group(function(){
        Route::resource('class_informations', 'ClassInformationsController');
        Route::resource('users', 'UsersController');
     });
+
+    Route::group(['as' => 'admin.api.', 'namespace' => 'Api\\', 'prefix' => 'api'], function(){
+        Route::get('students', 'StudentsController@index')->name('students.index');
+    });
 });
 
 
