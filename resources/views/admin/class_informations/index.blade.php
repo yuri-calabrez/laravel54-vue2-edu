@@ -12,10 +12,22 @@
             Table::withContents($class_informations->items())
             ->striped()
             ->callback('Editar', function($field, $class_information){
-                return Button::primary(Icon::pencil().' Editar')->asLinkTo(route('admin.class_informations.edit', ['class_information' => $class_information->id]));
+                return Button::primary(Icon::pencil().' Editar')
+                    ->asLinkTo(route('admin.class_informations.edit', [
+                    'class_information' => $class_information->id
+                ]));
             })
             ->callback('Ver',function($field, $class_information){
-                return Button::info(Icon::create('folder-open').'&nbsp;&nbsp; Ver')->asLinkTo(route('admin.class_informations.show', ['class_information' => $class_information->id]));
+                return Button::info(Icon::create('folder-open').'&nbsp;&nbsp; Ver')
+                    ->asLinkTo(route('admin.class_informations.show', [
+                    'class_information' => $class_information->id
+                ]));
+            })
+            ->callBack('Alunos', function($field, $class_information){
+                return Button::info(Icon::create('home').'&nbsp;&nbsp; Alunos')
+                    ->asLinkTo(route('admin.class_informations.students.index', [
+                    'class_information' => $class_information->id
+                ]));
             })
             !!}
         </div>

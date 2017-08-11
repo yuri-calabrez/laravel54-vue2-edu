@@ -59,7 +59,7 @@ class User extends Authenticatable implements TableInterface
         $types = [
             self::ROLE_ADMIN => Admin::class,
             self::ROLE_TEACHER => Teacher::class,
-            self::ROLE_STUDENT => Studant::class
+            self::ROLE_STUDENT => Student::class
         ];
         $model = $types[$type];
         $model = $model::create([]);
