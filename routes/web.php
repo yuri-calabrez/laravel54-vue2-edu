@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/app', function () {
+    return view('layouts.spa');
+});
+
 Route::prefix('admin')->group(function(){
     Auth::routes();
 
@@ -37,6 +41,7 @@ Route::prefix('admin')->group(function(){
        Route::resource('subjects', 'SubjectsController');
        Route::group(['prefix' => 'class_informations/{class_information}', 'as' => 'class_informations.'], function(){
            Route::resource('students', 'ClassStudentsController', ['only' => ['index', 'store', 'destroy']]);
+           Route::resource('teachings', 'ClassTeachingsController', ['only' => ['index', 'store', 'destroy']]);
        });
        Route::resource('class_informations', 'ClassInformationsController');
        Route::resource('users', 'UsersController');
@@ -44,6 +49,8 @@ Route::prefix('admin')->group(function(){
 
     Route::group(['as' => 'admin.api.', 'namespace' => 'Api\\', 'prefix' => 'api'], function(){
         Route::get('students', 'StudentsController@index')->name('students.index');
+        Route::get('subjects', 'SubjectsController@index')->name('subjects.index');
+        Route::get('teachers', 'TeachersController@index')->name('teachers.index');
     });
 });
 

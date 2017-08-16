@@ -29,6 +29,12 @@
                     'class_information' => $class_information->id
                 ]));
             })
+            ->callback('Ensino', function($field, $class_information){
+                return Button::success(Icon::create('blackboard').'&nbsp;&nbsp; Ensino')
+                    ->asLinkTo(route('admin.class_informations.teachings.index', [
+                        'class_information' => $class_information->id
+                    ]));
+            });
             !!}
         </div>
 
