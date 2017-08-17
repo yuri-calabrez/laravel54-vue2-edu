@@ -1,9 +1,16 @@
 <template>
-    <router-view></router-view>
+    <div>
+        <teacher-menu></teacher-menu>
+        <router-view></router-view>
+    </div>
 </template>
 
 <script type="text/javascript">
-    export default {
+    import TeacherMenuComponent from './teacher/TeacherMenu.vue';
 
+    export default {
+        components: {
+            'teacher-menu': TeacherMenuComponent
+        }
     }
 </script>
