@@ -19,7 +19,10 @@ Route::group(['as' => 'api.', 'namespace' => 'Api\\'], function(){
        Route::get('/user', function (Request $request) {
            return $request->user();
        });
-       Route::post('/logout', 'AuthController@logout');
    });
+
+    Route::group(['middleware' => 'auth:api'], function(){
+        Route::post('/logout', 'AuthController@logout');
+    });
 
 });

@@ -6,12 +6,14 @@ const payloadToObject = (token) => {
     return JSON.parse(atob(payload));
 };
 
+const TOKEN = 'token';
+
 export default {
     set token(value) {
-        value ? LocalStorage.set('token', value) : LocalStorage.remove('token');
+        value ? LocalStorage.set(TOKEN, value) : LocalStorage.remove(TOKEN);
     },
     get token() {
-        return LocalStorage.get('token');
+        return LocalStorage.get(TOKEN);
     },
     get payload() {
         return this.token != null ? payloadToObject(this.token) : null;
@@ -29,5 +31,8 @@ export default {
         return Jwt.logout()
             .then(afterRevokeToken)
             .catch(afterRevokeToken);
+    },
+    getAuthorizationHeader(){
+        return `Bearer ${LocalStorage.get(TOKEN)}`;
     }
 }

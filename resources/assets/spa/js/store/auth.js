@@ -8,7 +8,7 @@ const state = {
 const mutations = {
     authenticated(state){
         state.check = true;
-        state.user = JwtToken.token.payload.user;
+        state.user = JwtToken.payload.user;
     },
     unauthenticated(state){
         state.check = false;
