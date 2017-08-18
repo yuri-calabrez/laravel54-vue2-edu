@@ -15,3 +15,5 @@ new Vue({
     }
 });
 
+export default router;
+
