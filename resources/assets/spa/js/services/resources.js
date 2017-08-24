@@ -38,4 +38,12 @@ export class Jwt {
     }
 }
 
-export {};
+const Teacher = {
+    classInformation: Vue.resource('class_informations/{class_information}')
+};
+
+const Student = {
+
+};
+
+export {Teacher, Student};

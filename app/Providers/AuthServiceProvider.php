@@ -4,7 +4,7 @@ namespace SON\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use SON\Models\Admin;
+use SON\Models\{Admin, Teacher};
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -28,6 +28,10 @@ class AuthServiceProvider extends ServiceProvider
 
         \Gate::define('admin', function($user){
            return $user->userable instanceof Admin;
+        });
+
+        \Gate::define('teacher', function($user){
+            return $user->userable instanceof Teacher;
         });
     }
 }

@@ -13,15 +13,25 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['as' => 'api.', 'namespace' => 'Api\\'], function(){
-   Route::post('/access_token', 'AuthController@accessToken');
-   Route::group(['middleware' => 'auth.renew'], function(){
-       Route::get('/user', function (Request $request) {
-           return $request->user();
-       });
-   });
+Route::group(['as' => 'api.', 'namespace' => 'Api\\'], function () {
+    Route::post('/access_token', 'AuthController@accessToken');
+    Route::group(['middleware' => 'auth.renew'], function () {
 
-    Route::group(['middleware' => 'auth:api'], function(){
+        Route::group([
+            'prefix' => 'teacher',
+            'as' => 'teacher.',
+            'namespace' => 'Teacher\\',
+            'middleware' => 'can:teacher'
+        ], function () {
+            Route::resource('class_informations', 'ClassInformationsController', ['only' => ['index', 'show']]);
+        });
+
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+    });
+
+    Route::group(['middleware' => 'auth:api'], function () {
         Route::post('/logout', 'AuthController@logout');
     });
 
