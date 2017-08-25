@@ -29,6 +29,11 @@ class ClassTeaching extends Model
         return $this->belongsTo(Teacher::class);
     }
 
+    public function classTests()
+    {
+        return $this->hasMany(ClassTest::class);
+    }
+
     public function toArray()
     {
         $data =  parent::toArray();
