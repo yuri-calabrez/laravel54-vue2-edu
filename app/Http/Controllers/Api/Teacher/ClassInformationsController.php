@@ -15,11 +15,7 @@ class ClassInformationsController extends Controller
      */
     public function index()
     {
-        $results = ClassInformation::whereHas('teachings', function($query){
-            $id = \Auth::user()->userable->id;
-            $query->where('teacher_id', $id);
-        })->get();
-
+        $results = ClassInformation::byTeacher(\Auth::user()->userable->id)->get();
         return $results;
     }
 
@@ -33,11 +29,7 @@ class ClassInformationsController extends Controller
      */
     public function show(ClassInformation $class_information)
     {
-        $result = ClassInformation::whereHas('teachings', function($query){
-            $id = \Auth::user()->userable->id;
-            $query->where('teacher_id', $id);
-        })->findOrFail($class_information);
-
+        $result = ClassInformation::byTeacher(\Auth::user()->userable->id)->findOrFail($class_information);
         return $result;
     }
 }
