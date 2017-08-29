@@ -34,7 +34,7 @@ class ClassTestsController extends Controller
      */
     public function store(ClassTestRequest $request, ClassTeaching $classTeaching)
     {
-        return response()->json(['message' => 'Foi']);
+        return ClassTest::createFully($request->all()+['class_teaching_id' => $classTeaching->id]);
     }
 
     /**
@@ -60,9 +60,9 @@ class ClassTestsController extends Controller
      * @return \Illuminate\Http\Response
      * @internal param int $id
      */
-    public function update(ClassTestRequest $request, ClassTeaching $classTeaching)
+    public function update(ClassTestRequest $request, ClassTeaching $classTeaching, ClassTest $classTest)
     {
-        //
+        return $classTest->updateFully($request->all());
     }
 
     /**
@@ -71,8 +71,11 @@ class ClassTestsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ClassTeaching $classTeaching, $classTestId)
     {
-        //
+        $classTest = ClassTest::byTeacher(\Auth::user()->userable->id)
+            ->findOrFail($classTestId);
+        $classTest->deleteFully();
+        return response()->json([], 204);
     }
 }
