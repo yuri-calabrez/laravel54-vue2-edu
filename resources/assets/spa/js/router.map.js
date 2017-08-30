@@ -25,6 +25,14 @@ export default [
         }
     },
     {
+        name: 'class_tests.create_data',
+        path: '/classes/:class_teaching/tests/create_data',
+        component: require('./components/teacher/class_test/TeacherClassTestStepData.vue'),
+        meta: {
+            auth: true
+        }
+    },
+    {
         name: 'login',
         path: '/login',
         component: require('./components/Login.vue')

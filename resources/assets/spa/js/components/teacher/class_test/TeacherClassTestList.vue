@@ -5,7 +5,7 @@
                 <h1>Avaliações de {{classInformationName}}</h1>
             </div>
         </div>
-        <router-link :to="classTestCreateRoute" class="btn btn-primary">
+        <router-link :to="routeClassTestCreate" class="btn btn-primary">
             Nova Avaliação
         </router-link>
 
@@ -27,7 +27,7 @@
                 <td>{{classTest.date_start}}</td>
                 <td>{{classTest.date_end}}</td>
                 <td>{{classTest.total_questions}}</td>
-                <td>{{classTest.point}}</td>
+                <td>{{classTest.total_points}}</td>
                 <td>#</td>
             </tr>
             </tbody>
@@ -37,14 +37,26 @@
 
 <script type="text/javascript">
     import store from '../../../store/store';
+    import classInformationMixin from '../../../mixins/classInformation.mixin';
     export default {
+        mixins: [classInformationMixin],
         computed: {
             classTests(){
                 return store.state.teacher.classTest.classTests;
+            },
+            routeClassTestCreate(){
+                return {
+                    name: 'class_tests.create_data',
+                    params: {
+                        'class_teaching': this.$route.params.class_teaching
+                    }
+                }
             }
         },
         mounted(){
-
+            let classTeachingId = this.$route.params.class_teaching;
+            store.dispatch('teacher/classTeaching/get', classTeachingId);
+            store.dispatch('teacher/classTest/query', classTeachingId);
         },
         methods: {
 
