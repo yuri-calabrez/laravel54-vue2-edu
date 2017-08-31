@@ -3,12 +3,37 @@
         <div class="form-group">
             <label for="question" class="control-label">Questão</label>
             <textarea id="question" name="question" class="form-control"
-                      v-model="question.question"></textarea>
+            v-model="question.question"></textarea>
         </div>
         <div class="form-group">
             <label for="point" class="control-label">Pontos</label>
             <input name="point" id="point" class="form-control" v-model="question.point">
         </div>
+        <button class="btn btn-primary" type="button" @click="addChoice()">
+            Nova alternativa
+        </button>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Verdade?</th>
+                    <th>Alternativa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(choice, index) in question.choices">
+                    <td>
+                        <a href="#" class="btn btn-danger" @click.prevent="deleteChoice(index)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </td>
+                    <td></td>
+                    <td>
+                        <textarea class="form-control" v-model="choice.choice"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <button class="btn btn-success btn-block">Adicionar</button>
     </form>
 </template>
@@ -21,12 +46,18 @@
             question() {
                //return this.$deepModel('teacher.classTest.question');
                return store.state.teacher.classTest.question;
-            }
+           }
+       },
+       methods: {
+        addQuestion() {
+            store.commit('teacher/classTest/addQuestion');
         },
-        methods: {
-            addQuestion() {
-                store.commit('teacher/classTest/addQuestion');
-            }
+        addChoice(){
+            store.commit('teacher/classTest/addChoice');
+        },
+        deleteChoice(index) {
+            store.commit('teacher/classTest/deleteChoice', index);
         }
     }
+}
 </script>

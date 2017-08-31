@@ -18,8 +18,8 @@ class ClassTestsController extends Controller
     public function index(ClassTeaching $classTeaching)
     {
         $results = ClassTest::where('class_teaching_id', $classTeaching->id)
-            ->byTeacher(\Auth::user()->userable->id)
-            ->get();
+        ->byTeacher(\Auth::user()->userable->id)
+        ->get();
 
         return $results;
     }
@@ -46,8 +46,9 @@ class ClassTestsController extends Controller
     public function show(ClassTeaching $classTeaching, ClassTest $classTest)
     {
         $result = ClassTest::byTeacher(\Auth::user()->userable->id)
-            ->findOrFail($classTest->id);
-
+        ->findOrFail($classTest->id);
+        $array = $result->toArray();
+        $array['questions'] = $result->questions;
         return $result;
     }
 
@@ -74,7 +75,7 @@ class ClassTestsController extends Controller
     public function destroy(ClassTeaching $classTeaching, $classTestId)
     {
         $classTest = ClassTest::byTeacher(\Auth::user()->userable->id)
-            ->findOrFail($classTestId);
+        ->findOrFail($classTestId);
         $classTest->deleteFully();
         return response()->json([], 204);
     }

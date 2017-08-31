@@ -16,13 +16,13 @@
                     <div class="col-md-3">
                         <label for="date_start" class="control-label">Início</label>
                         <input type="datetime-local" id="date_start" name="date_start" class="form-control"
-                               v-model="classTest.date_start">
+                        v-model="classTest.date_start">
                     </div>
 
                     <div class="col-md-3">
                         <label for="date_end" class="control-label">Fim</label>
                         <input type="datetime-local" id="date_end" name="date_end" class="form-control"
-                               v-model="classTest.date_end">
+                        v-model="classTest.date_end">
                     </div>
 
                     <div class="col-md-12" style="margin-top: 15px;">
@@ -48,6 +48,12 @@
         mounted(){
             let classTeachingId = this.$route.params.class_teaching;
             store.dispatch('teacher/classTeaching/get', classTeachingId);
+            if(this.$route.name == 'class_tests.update_data') {
+                store.dispatch('teacher/classTest/get', {
+                    classTeachingId: classTeachingId,
+                    classTestId: this.$route.params.class_test
+                });
+            }
         },
         methods: {
             goToQuestions(){

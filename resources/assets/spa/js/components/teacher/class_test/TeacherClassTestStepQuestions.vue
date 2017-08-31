@@ -9,14 +9,21 @@
                 {{classTest.name}} | {{classTest.date_start}} à {{classTest.date_end}}
             </div>
 
-            <div class="col-md-6">
-                <teacher-class-test-question-form></teacher-class-test-question-form>
-            </div>
-            <div class="col-md-6">
-                <teacher-class-test-question-list></teacher-class-test-question-list>
-            </div>
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-block" @click="save" 
+                :disabled="!classTest.questions.length">
+                Salvar
+            </button>
+        </div>
+        <br><br>
+        <div class="col-md-6">
+            <teacher-class-test-question-form></teacher-class-test-question-form>
+        </div>
+        <div class="col-md-6">
+            <teacher-class-test-question-list></teacher-class-test-question-list>
         </div>
     </div>
+</div>
 </template>
 
 <script type="text/javascript">
@@ -37,6 +44,31 @@
         mounted(){
             let classTeachingId = this.$route.params.class_teaching;
             store.dispatch('teacher/classTeaching/get', classTeachingId);
+        },
+
+        methods: {
+            save(){
+                let classTeachingId = this.$route.params.class_teaching;
+                let afterSave = () => {
+                    this.$router.push({
+                        name: 'class_tests.list',
+                        params: {
+                            class_teaching: classTeachingId
+                        }
+                    });
+                };
+                if(typeof this.classTest.id == 'undefined'){
+                    store.dispatch('teacher/classTest/create', classTeachingId)
+                    .then(afterSave);
+                } else {
+                    store.dispatch('teacher/classTest/update', {
+                        classTeachingId,
+                        classTestId: this.classTest.id
+                    })
+                    .then(afterSave);
+                }
+                
+            }
         }
     }
 </script>

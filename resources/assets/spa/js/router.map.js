@@ -33,17 +33,26 @@ export default [
         }
     },
     {
+        name: 'class_tests.update_data',
+        path: '/classes/:class_teaching/tests/:class_test/update_data',
+        component: require('./components/teacher/class_test/TeacherClassTestStepData.vue'),
+        meta: {
+            auth: true
+        }
+    },
+    {
         name: 'class_tests.questions',
-        path: '/classes/:class_teaching/tests/questions',
+        path: '/classes/:class_teaching/tests/:class_test?/questions',
         component: require('./components/teacher/class_test/TeacherClassTestStepQuestions.vue'),
         meta: {
             auth: true
         }
     },
+
     {
         name: 'login',
         path: '/login',
         component: require('./components/Login.vue')
     },
     {path: '*', redirect: '/login'}
-];
+    ];
