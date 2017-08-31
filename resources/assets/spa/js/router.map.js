@@ -33,6 +33,14 @@ export default [
         }
     },
     {
+        name: 'class_tests.questions',
+        path: '/classes/:class_teaching/tests/questions',
+        component: require('./components/teacher/class_test/TeacherClassTestStepQuestions.vue'),
+        meta: {
+            auth: true
+        }
+    },
+    {
         name: 'login',
         path: '/login',
         component: require('./components/Login.vue')

@@ -5,22 +5,24 @@
                 <h1>Nova Avaliações de {{classInformationName}}</h1>
             </div>
 
-            <form class="form-horizontal" @submit.prevent="save">
+            <form class="form-horizontal" @submit.prevent="goToQuestions">
                 <fieldset>
                     <legend>Informações da avaliação</legend>
                     <div class="col-md-6">
                         <label for="name" class="control-label">Nome</label>
-                        <input type="text" id="name" name="name" class="form-control">
+                        <input type="text" id="name" name="name" class="form-control" v-model="classTest.name">
                     </div>
                     
                     <div class="col-md-3">
                         <label for="date_start" class="control-label">Início</label>
-                        <input type="datetime-local" id="date_start" name="date_start" class="form-control">
+                        <input type="datetime-local" id="date_start" name="date_start" class="form-control"
+                               v-model="classTest.date_start">
                     </div>
 
                     <div class="col-md-3">
                         <label for="date_end" class="control-label">Fim</label>
-                        <input type="datetime-local" id="date_end" name="date_end" class="form-control">
+                        <input type="datetime-local" id="date_end" name="date_end" class="form-control"
+                               v-model="classTest.date_end">
                     </div>
 
                     <div class="col-md-12" style="margin-top: 15px;">
@@ -37,14 +39,25 @@
     import classInformationMixin from '../../../mixins/classInformation.mixin';
     export default {
         mixins: [classInformationMixin],
-        cumputed:{
-            classTests(){
-                return store.state.teacher.classTest.classTests;
+        computed: {
+            classTest(){
+                return store.state.teacher.classTest.classTest;
+                //return this.$deepModel('teacher.classTest.classTest');
             }
         },
         mounted(){
             let classTeachingId = this.$route.params.class_teaching;
             store.dispatch('teacher/classTeaching/get', classTeachingId);
+        },
+        methods: {
+            goToQuestions(){
+                this.$router.push({
+                    name: 'class_tests.questions',
+                    params: {
+                        class_teaching: this.$route.params.class_teaching
+                    }
+                })
+            }
         }
     }
 </script>

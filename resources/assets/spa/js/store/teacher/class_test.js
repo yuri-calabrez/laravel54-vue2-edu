@@ -1,12 +1,34 @@
 import {Teacher} from '../../services/resources';
 
+function newQuestion(){
+    return {
+        question: '',
+        point: 1,
+        choices: []
+    }
+}
+
 const state = {
-    classTests: []
+    classTests: [],
+    classTest: {
+        name: '',
+        date_start: '',
+        date_end: '',
+        questions: []
+    },
+    question: newQuestion()
 };
 
 const mutations = {
     setClassTests(state, classTests){
         state.classTests = classTests;
+    },
+    setClassTest(state, classTest){
+        state.classTest = classTest;
+    },
+    addQuestion(state) {
+        state.classTest.questions.push(state.question);
+        state.question = newQuestion();
     }
 };
 
@@ -20,7 +42,7 @@ const actions = {
     get(context, {classTeachingId, classTestId}) {
         return Teacher.classTest.get({class_teaching: classTeachingId, class_test: classTestId})
             .then(response => {
-               context.commit('setClassTests', response.data);
+               context.commit('setClassTest', response.data);
             });
     }
 };
