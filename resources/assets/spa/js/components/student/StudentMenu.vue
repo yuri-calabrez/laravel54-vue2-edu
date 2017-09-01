@@ -7,7 +7,7 @@
         data(){
             return {
                 menus: [
-                    {name: "Minhas turmas", routeName: 'teacher.class_teachings.list'}
+                    {name: "Minhas", routeName: 'teacher.class_teachings.list'}
                 ],
                 brandRouteName: 'teacher.class_teachings.list'
             }

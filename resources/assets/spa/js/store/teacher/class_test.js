@@ -2,7 +2,8 @@ import {Teacher} from '../../services/resources';
 
 function newChoice(){
     return {
-        choice: ''
+        choice: '',
+        'true': false
     };
 }
 
@@ -27,7 +28,8 @@ const state = {
         date_end: '',
         questions: []
     },
-    question: newQuestion()
+    question: newQuestion(),
+    choiceTrue: null
 };
 
 const mutations = {
@@ -50,8 +52,16 @@ const mutations = {
             state.classTest.questions.push(state.question);
         }
         state.question = newQuestion();
+        state.choiceTrue = null;
     },
     setQuestion(state, question) {
+        question.choices = question.choices.map((item) => {
+           item.true = item.true ? "true" :false;
+           if(item.true) {
+               state.choiceTrue = item;
+           }
+           return item;
+        });
         state.question = question;
     },
     deleteQuestion(state, index) {
@@ -62,6 +72,12 @@ const mutations = {
     },
     deleteChoice(state, index) {
         state.question.choices.splice(index, 1);
+    },
+    setChoiceTrue(state, choice) {
+        if(state.choiceTrue) {
+            state.choiceTrue.true = false;
+        }
+        state.choiceTrue = choice;
     }
 };
 

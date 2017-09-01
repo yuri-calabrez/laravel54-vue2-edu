@@ -132,7 +132,8 @@ class User extends Authenticatable implements TableInterface, JWTSubject
             'user' => [
                 'id' => $this->id,
                 'name' => $this->name,
-                'email' => $this->email
+                'email' => $this->email,
+                'role' => $this->userable instanceof Teacher ? self::ROLE_TEACHER : self::ROLE_STUDENT
             ]
         ];
     }
