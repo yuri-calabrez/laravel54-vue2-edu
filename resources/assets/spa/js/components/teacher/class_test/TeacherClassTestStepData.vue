@@ -60,7 +60,8 @@
                 this.$router.push({
                     name: 'class_tests.questions',
                     params: {
-                        class_teaching: this.$route.params.class_teaching
+                        class_teaching: this.$route.params.class_teaching,
+                        class_test: this.$route.params.class_test
                     }
                 })
             }

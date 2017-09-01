@@ -37,9 +37,22 @@ const mutations = {
     setClassTest(state, classTest){
         state.classTest = classTest;
     },
+    deleteClassTest(state, classTestId) {
+        let index = state.classTests.findIndex((item) => {
+            return item.id == classTestId;
+        });
+        if(index != 1){
+            state.classTests.splice(index, 1);
+        }
+    },
     addQuestion(state) {
-        state.classTest.questions.push(state.question);
+        if(typeof state.question.id == 'undefined') {
+            state.classTest.questions.push(state.question);
+        }
         state.question = newQuestion();
+    },
+    setQuestion(state, question) {
+        state.question = question;
     },
     deleteQuestion(state, index) {
         state.classTest.questions.splice(index, 1);
@@ -73,6 +86,14 @@ const actions = {
             class_teaching: classTeachingId, 
             class_test: classTestId}, context.state.classTest);
     },
+    'delete'(context, {classTeachingId, classTestId}) {
+        return Teacher.classTest.delete({
+            class_teaching: classTeachingId,
+            class_test: classTestId})
+            .then(() => {
+                context.commit('deleteClassTest', classTestId);
+            });
+    }
 };
 
 export default {
