@@ -16,4 +16,9 @@ class Student extends Model
         $data['user'] = $this->user;
         return $data;
     }
+
+    public function classInformations()
+    {
+        return $this->belongsToMany(ClassInformation::class);
+    }
 }

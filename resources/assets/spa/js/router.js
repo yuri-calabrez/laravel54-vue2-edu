@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
             return router.push({name: 'teacher.class_teachings.list'});
         }
         if(store.getters['auth/isStudent'] && to.name.startsWith('teacher')) {
-            return router.push({name: 'student.test'});
+            return router.push({name: 'student.class_informations.list'});
         }
     }
     next();

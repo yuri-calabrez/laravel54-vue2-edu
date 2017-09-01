@@ -26,8 +26,19 @@ class ClassTest extends Model
 
     public function scopeByTeacher($query, $teacherId)
     {
-        return $query->whereHas('classTeaching', function($query) use ($teacherId){
-           $query->where('teacher_id', $teacherId);
+        return $query->whereHas('classTeaching', function ($query) use ($teacherId) {
+            $query->where('teacher_id', $teacherId);
+        });
+    }
+
+    public function scopeByStudent($query, $studentId)
+    {
+        return $query->whereHas('classTeaching', function ($query) use ($studentId) {
+            $query->whereHas('classInformation', function ($query) use ($studentId) {
+                $query->whereHas('students', function ($query) use ($studentId) {
+                    $query->where('student_id', $studentId);
+                });
+            });
         });
     }
 
@@ -35,7 +46,7 @@ class ClassTest extends Model
     {
         $classTest = self::create($data);
         foreach ($data['questions'] as $question) {
-            self::createQuestion($question+['class_test_id' => $classTest->id]);
+            self::createQuestion($question + ['class_test_id' => $classTest->id]);
         }
         return $classTest;
     }
@@ -45,7 +56,7 @@ class ClassTest extends Model
         $this->update($data);
         $this->deleteQuestions();
         foreach ($data['questions'] as $question) {
-            self::createQuestion($question+['class_test_id' => $this->id]);
+            self::createQuestion($question + ['class_test_id' => $this->id]);
         }
         return $this;
     }

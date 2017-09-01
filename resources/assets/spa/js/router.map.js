@@ -62,12 +62,21 @@ export default [
         },
         children: [
             {
-                name: 'student.test',
-                path: 'test',
-                component: {
-                    template: '<div>Olá estudante</div>'
+                name: 'student.class_informations.list',
+                path: 'classes',
+                component: require('./components/student/StudentClassInformationList.vue'),
+                meta: {
+                    auth: true
                 }
-            }
+            },
+            {
+                name: 'student.class_teachings.list',
+                path: 'classes/:class_information/teachings',
+                component: require('./components/student/StudentClassTeachingList.vue'),
+                meta: {
+                    auth: true
+                }
+            },
         ]
     },
     {

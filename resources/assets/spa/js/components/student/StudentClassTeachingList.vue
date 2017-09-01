@@ -1,22 +1,18 @@
 <template>
     <div class="container">
         <div class="row">
-            <h3>Minhas turmas</h3>
+            <div class="page-header">
+                <h1 v-if="classInformation">Disciplinas de {{classInformation | classInformationAlias}}</h1>
+            </div>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Data inicio</th>
-                    <th>Data fim</th>
-                    <th>Turma</th>
                     <th>Disciplina</th>
-                    <th>Ações</th>
+                    <th>Avaliações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="classTeaching in classTeachings">
-                    <td>{{classTeaching.class_information.date_start | dateBr}}</td>
-                    <td>{{classTeaching.class_information.date_end | dateBr}}</td>
-                    <td>{{classTeaching.class_information | classInformationAlias}}</td>
                     <td>{{classTeaching.subject.name}}</td>
                     <td>
                         <router-link class="btn btn-primary"
@@ -37,11 +33,16 @@
     export default {
         computed: {
             classTeachings() {
-                return store.state.teacher.classTeaching.classTeachings;
+                return store.state.student.classTeaching.classTeachings;
+            },
+            classInformation(){
+                return store.state.student.classInformation.classInformation;
             }
         },
         mounted() {
-            store.dispatch('teacher/classTeaching/query');
+            let classInformationId = this.$route.params.class_information;
+            store.dispatch('student/classInformation/get', classInformationId);
+            store.dispatch('student/classTeaching/query', classInformationId);
         }
     }
 </script>
