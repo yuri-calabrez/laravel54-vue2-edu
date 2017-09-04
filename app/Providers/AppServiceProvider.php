@@ -5,6 +5,7 @@ namespace SON\Providers;
 use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 use Illuminate\Support\ServiceProvider;
+use SON\Models\QuestionChoice;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,14 @@ class AppServiceProvider extends ServiceProvider
             });
 
             return $items->count() === 1;
+        });
+
+        \Validator::extend('choice_from_question', function($attribute, $value, $params, $validator){
+            $data = $validator->getData();
+            $questionId = array_get($data, str_replace('question_choice_id', 'question_id', $attribute));
+            $choice = QuestionChoice::where('question_id', $questionId)
+                    ->find($value);
+            return $choice != null;
         });
     }
 

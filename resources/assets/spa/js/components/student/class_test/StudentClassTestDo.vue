@@ -30,12 +30,14 @@
                 <ol class="nav nav-pills">
                     <li v-for="(question, index) in classTest.questions">
                         <a href="#" @click.prevent="setQuestion(question)">
-                            <span class="label label-default">#Questão {{index+1}}</span>
+                            <span class="label" :class="defineColorQuestion(question)">#Questão {{index+1}}</span>
                         </a>
                     </li>
                 </ol>
             </div>
         </div>
+
+        <student-class-test-question></student-class-test-question>
     </div>
 </template>
 <script type="text/javascript">
@@ -44,6 +46,9 @@
 
     export default {
         mixins: [classInformationMixin],
+        components: {
+            'student-class-test-question': require('./StudentClassTestQuestion.vue')
+        },
         computed: {
             storeType(){
                 return 'student';
@@ -62,6 +67,9 @@
             classTestDateEnd(){
                 let classTest = this.classTest;
                 return classTest ? this.$options.filters.dateTimeBr(classTest.date_end) : '';
+            },
+            choices(){
+                return store.state.student.studentClassTest.studentClassTest.choices;
             }
         },
         mounted() {
@@ -70,7 +78,25 @@
             let classTestId = this.$route.params.class_test;
 
             store.dispatch('student/classTeaching/get', {classInformationId, classTeachingId});
-            store.dispatch('student/classTest/get', {classTeachingId, classTestId});
+            store.dispatch('student/classTest/get', {classTeachingId, classTestId})
+                .then(() => {
+                    let question = this.classTest.questions[0];
+                    store.commit('student/classTest/setQuestion', question);
+                });
+        },
+        methods: {
+            setQuestion(question){
+                return store.commit('student/classTest/setQuestion', question);
+            },
+            defineColorQuestion(question) {
+                return {
+                    'label-default': !this.choices.hasOwnProperty(question.id),
+                    'label-primary': this.choices.hasOwnProperty(question.id),
+                }
+            },
+            save(){
+
+            }
         }
     }
 </script>
