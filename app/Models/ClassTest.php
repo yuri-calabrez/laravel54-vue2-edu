@@ -67,6 +67,12 @@ class ClassTest extends Model
         $this->delete();
     }
 
+    public static function greatherDateAnd30Minutes($dateEnd)
+    {
+        $dateEnd = (new Carbon($dateEnd))->addMinutes(30);
+        return (new Carbon())->greaterThanOrEqualTo($dateEnd);
+    }
+
     protected static function createQuestion($question)
     {
         $newQuestion = Question::create($question);

@@ -28,6 +28,7 @@ class StudentClassTestRequest extends FormRequest
         $classTest = $this->route('class_test');
         $data = [
             'class_test_id' => $classTest->id,
+            'date_start' => $classTest->date_start,
             'date_end' => $classTest->date_end,
             'date' => (new Carbon())->format(\DateTime::ISO8601)
         ];
@@ -41,6 +42,7 @@ class StudentClassTestRequest extends FormRequest
                    'question_choice_id' => $choiceId
                 ]);
             }
+            $this->merge($data);
         }
         return $data;
     }
@@ -58,6 +60,7 @@ class StudentClassTestRequest extends FormRequest
                 Rule::unique('student_class_tests')
                 ->where('student_id', \Auth::user()->userable->id)
             ],
+            //'date' => 'after_or_equal:date_start|before_or_equal:date_end',
             'date' => 'before_or_equal:date_end',
             'choices' => 'required|array',
             'choices.*.question_id' => [
