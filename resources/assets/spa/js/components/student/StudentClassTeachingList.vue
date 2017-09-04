@@ -15,8 +15,7 @@
                 <tr v-for="classTeaching in classTeachings">
                     <td>{{classTeaching.subject.name}}</td>
                     <td>
-                        <router-link class="btn btn-primary"
-                                     :to="{name: 'teacher.class_tests.list', params: {class_teaching: classTeaching.id}}">
+                        <router-link class="btn btn-primary" :to="routeClassTestList(classTeaching)">
                             Avaliações
                         </router-link>
                     </td>
@@ -43,6 +42,17 @@
             let classInformationId = this.$route.params.class_information;
             store.dispatch('student/classInformation/get', classInformationId);
             store.dispatch('student/classTeaching/query', classInformationId);
+        },
+        methods: {
+            routeClassTestList(classTeaching) {
+                return {
+                    name: 'student.class_tests.list',
+                    params: {
+                        class_information: this.$route.params.class_information,
+                        class_teaching: classTeaching.id
+                    }
+                }
+            }
         }
     }
 </script>

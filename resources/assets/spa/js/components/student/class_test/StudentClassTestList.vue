@@ -5,9 +5,6 @@
                 <h1>Avaliações de {{classInformationName}}</h1>
             </div>
         </div>
-        <router-link :to="routeClassTestCreate" class="btn btn-primary">
-            Nova Avaliação
-        </router-link>
 
         <table class="table table-striped">
             <thead>
@@ -17,8 +14,8 @@
                 <th>Fim</th>
                 <th>Questões</th>
                 <th>Pontos</th>
-                <th>Editar</th>
-                <th>Remover</th>
+                <th>Meus pontos</th>
+                <th>Ações</th>
             </tr>
             </thead>
 
@@ -30,14 +27,13 @@
                 <td>{{classTest.total_questions}}</td>
                 <td>{{classTest.total_points}}</td>
                 <td>
-                    <router-link :to="routeClassTestEdit(classTest.id)" class="btn btn-primary">
-                        Editar Avaliação
-                    </router-link>
+                   00
                 </td>
                 <td>
-                    <a href="#" class="btn btn-danger" @click.prevent="deleteQuestion(classTest)">
-                        Remover
-                    </a>
+                    <router-link  :to="routeClassTestDo(classTest)" class="btn btn-primary">
+                        Começar
+                    </router-link>
+
                 </td>
             </tr>
             </tbody>
@@ -52,41 +48,29 @@
     export default {
         mixins: [classInformationMixin],
         computed: {
-            classTests() {
-                return store.state.teacher.classTest.classTests;
+            storeType(){
+                return 'student';
             },
-            routeClassTestCreate() {
-                return {
-                    name: 'teacher.class_tests.create_data',
-                    params: {
-                        'class_teaching': this.$route.params.class_teaching
-                    }
-                }
+            classTests() {
+                return store.state.student.classTest.classTests;
             }
         },
         mounted() {
             let classTeachingId = this.$route.params.class_teaching;
-            store.dispatch('teacher/classTeaching/get', classTeachingId);
-            store.dispatch('teacher/classTest/query', classTeachingId);
+            let classInformationId = this.$route.params.class_information;
+            store.dispatch('student/classTeaching/get', {classInformationId, classTeachingId});
+            store.dispatch('student/classTest/query', classTeachingId);
         },
         methods: {
-            routeClassTestEdit(classTestId) {
+            routeClassTestDo(classTest) {
                 return {
-                    name: 'teacher.class_tests.update_data',
+                    name: 'student.class_tests.do',
                     params: {
+                        class_information: this.$route.params.class_information,
                         class_teaching: this.$route.params.class_teaching,
-                        class_test: classTestId
+                        class_test: classTest.id
                     }
                 }
-            },
-            deleteQuestion(classTest) {
-                if (confirm("Deseja realmente excluir?")) {
-                    store.dispatch('teacher/classTest/delete', {
-                        classTeachingId: this.$route.params.class_teaching,
-                        classTestId: classTest.id
-                    });
-                }
-
             }
         }
     }

@@ -37,6 +37,9 @@
         },
         mixins: [classInformationMixin],
         computed: {
+            storeType(){
+                return 'teacher';
+            },
             classTest() {
                 return store.state.teacher.classTest.classTest;
                 //return this.$deepModel('teacher.classTest.classTest');

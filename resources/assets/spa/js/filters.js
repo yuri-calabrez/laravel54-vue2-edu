@@ -10,6 +10,17 @@ Vue.filter('dateBr', function (value) {
     return value
 });
 
+Vue.filter('dateTimeBr', function (value) {
+    if (value && value.length >= 16) {
+        let dateArray = value.substring(0, 10).split('-');
+        if (dateArray.length === 3) {
+            return dateArray.reverse().join('/').replace('T', '');
+        }
+    }
+    return value
+});
+
+
 Vue.filter('classInformationAlias', function(classInformation){
    return `${classInformation.cycle}.${classInformation.subdivision}.${classInformation.semester}.${classInformation.year}`;
 });

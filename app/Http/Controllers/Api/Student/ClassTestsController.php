@@ -13,18 +13,18 @@ class ClassTestsController extends Controller
     {
         $results = ClassTest
             ::where('class_teaching_id', $classTeaching->id)
-            ->ByStudent(\Auth::user()->userable->id)
+            ->byStudent(\Auth::user()->userable->id)
             ->get();
-
         return $results;
     }
 
     public function show(ClassTeaching $classTeaching, $id)
     {
         $result = ClassTest
-            ::ByStudent(\Auth::user()->userable->id)
+            ::byStudent(\Auth::user()->userable->id)
             ->findOrFail($id);
-
+        $array = $result->toArray();
+        $array['questions'] = $result->questions;
         return $result;
     }
 }

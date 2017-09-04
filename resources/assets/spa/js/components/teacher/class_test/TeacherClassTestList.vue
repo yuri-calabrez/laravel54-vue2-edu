@@ -52,6 +52,9 @@
     export default {
         mixins: [classInformationMixin],
         computed: {
+            storeType(){
+                return 'teacher';
+            },
             classTests() {
                 return store.state.teacher.classTest.classTests;
             },
