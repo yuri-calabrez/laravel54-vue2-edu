@@ -18,7 +18,7 @@ class StudentClassTestRequest extends FormRequest
     {
         $classTest = $this->route('class_test');
         $result = ClassTest
-            ::byStudent('student_id', \Auth::user()->userable->id)
+            ::byStudent(\Auth::user()->userable->id)
             ->find($classTest->id);
         return $result != null;
     }
@@ -32,6 +32,7 @@ class StudentClassTestRequest extends FormRequest
             'date_end' => $classTest->date_end,
             'date' => (new Carbon())->format(\DateTime::ISO8601)
         ];
+
         $choices = $this->get('choices');
         $data['choices'] = $choices;
         if(is_array($choices)) {

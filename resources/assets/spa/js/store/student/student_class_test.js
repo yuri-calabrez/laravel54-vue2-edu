@@ -20,11 +20,14 @@ const mutations = {
 };
 
 const actions = {
-    get(context, {classTeachingId, classTestId}) {
-        return Student.classTest.get({class_teaching: classTeachingId, class_test: classTestId})
+    get(context, {classTestId, studentClassTestId}) {
+        return Student.studentClassTest.get({class_test: classTestId, student_class_test: studentClassTestId})
         .then(response => {
-           context.commit('setClassTest', response.data);
+           context.commit('setStudentClassTest', response.data);
        });
+    },
+    create(context, classTestId) {
+        return Student.studentClassTest.save({class_test: classTestId}, context.state.studentClassTest);
     }
 };
 

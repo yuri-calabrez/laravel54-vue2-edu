@@ -42,7 +42,7 @@ Route::group(['as' => 'api.', 'namespace' => 'Api\\'], function () {
             Route::group(['prefix' => 'class_teachings/{class_teaching}', 'as' => 'class_teachings.'], function(){
                 Route::resource('class_tests', 'ClassTestsController', ['only' => ['index', 'show']]);
             });
-            Route::group(['prefix' => 'class_test/{class_test}', 'as' => 'class_test.'], function(){
+            Route::group(['prefix' => 'class_tests/{class_test}', 'as' => 'class_test.'], function(){
                 Route::resource('do', 'StudentClassTestsController', ['only' => ['show', 'store']]);
             });
             Route::resource('class_informations', 'ClassInformationsController', ['only' => ['index', 'show']]);

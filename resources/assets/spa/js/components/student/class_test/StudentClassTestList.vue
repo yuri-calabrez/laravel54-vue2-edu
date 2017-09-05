@@ -31,10 +31,19 @@
                 </td>
                 <td v-else></td>
                 <td>
-                    <router-link  :to="routeClassTestDo(classTest)" class="btn btn-primary">
-                        Começar
-                    </router-link>
-
+                    <template v-if="!classTest.student_class_test && afterStart(classTest.date_start) && beforeEnd(classTest.date_end)">
+                        <router-link  :to="routeClassTestDo(classTest)" class="btn btn-primary">
+                            Começar
+                        </router-link>
+                    </template>
+                    <template v-if="classTest.student_class_test && classTest.student_class_test.point">
+                        <router-link  :to="routeClassTestDo(classTest)" class="btn btn-primary">
+                            Ver
+                        </router-link>
+                    </template>
+                    <template v-if="classTest.student_class_test && !classTest.student_class_test.point">
+                       Em análise
+                    </template>
                 </td>
             </tr>
             </tbody>
@@ -45,6 +54,7 @@
 <script type="text/javascript">
     import store from '../../../store/store';
     import classInformationMixin from '../../../mixins/classInformation.mixin';
+    import moment from 'moment';
 
     export default {
         mixins: [classInformationMixin],
@@ -63,13 +73,22 @@
             store.dispatch('student/classTest/query', classTeachingId);
         },
         methods: {
+            afterStart(date){
+                let date1 = moment(date, moment.ISO_8601).toDate();
+                return new Date().getTime() >= date1.getTime();
+            },
+            beforeEnd(date){
+                let date1 = moment(date, moment.ISO_8601).toDate();
+                return new Date().getTime() <= date1.getTime();
+            },
             routeClassTestDo(classTest) {
                 return {
                     name: 'student.class_tests.do',
                     params: {
                         class_information: this.$route.params.class_information,
                         class_teaching: this.$route.params.class_teaching,
-                        class_test: classTest.id
+                        class_test: classTest.id,
+                        student_class_test: classTest.student_class_test ? classTest.student_class_test.id : null
                     }
                 }
             }

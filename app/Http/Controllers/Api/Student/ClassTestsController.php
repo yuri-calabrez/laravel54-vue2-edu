@@ -17,15 +17,15 @@ class ClassTestsController extends Controller
             ::where('class_teaching_id', $classTeaching->id)
             ->byStudent($studentId)
             ->get();
-        $results = array_map(function($classTest) use($studentId){
+        $results = array_map(function ($classTest) use ($studentId) {
             $studentClassTest = StudentClassTest
                 ::where('class_test_id', $classTest['id'])
                 ->where('student_id', $studentId)
                 ->first();
 
-            if($studentClassTest) {
+            if ($studentClassTest) {
                 $classTest['student_class_test']['id'] = $studentClassTest->id;
-                if(ClassTest::greatherDateAnd30Minutes($classTest['date_end'])) {
+                if (ClassTest::greatherDateAnd30Minutes($classTest['date_end'])) {
                     $classTest['student_class_test']['point'] = $studentClassTest->point;
                 }
             }
@@ -41,13 +41,14 @@ class ClassTestsController extends Controller
             ->findOrFail($id);
         $array = $result->toArray();
 
-        $array['questions'] = array_map(function($question){
+        $array['questions'] = array_map(function ($question) use ($array) {
 
-            $question['choices'] = array_map(function($choice){
-                unset($choice['true']);
-                return $choice;
-            }, $question['choices']->toArray());
-
+            if (!ClassTest::greatherDateAnd30Minutes($array['date_end'])) {
+                $question['choices'] = array_map(function ($choice) use ($array) {
+                    unset($choice['true']);
+                    return $choice;
+                }, $question['choices']->toArray());
+            }
             return $question;
         }, $result->questions->toArray());
 

@@ -8,7 +8,8 @@ class StudentClassTest extends Model
 {
     protected $fillable = [
         'student_id',
-        'question_id'
+        'question_id',
+        'class_test_id'
     ];
 
     public function student()
