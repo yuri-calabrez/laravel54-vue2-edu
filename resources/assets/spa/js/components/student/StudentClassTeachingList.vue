@@ -6,24 +6,31 @@
             </div>
             <table class="table table-striped">
                 <thead>
-                <tr>
-                    <th>Disciplina</th>
-                    <th>Avaliações</th>
-                </tr>
+                    <tr>
+                        <th>Disciplina</th>
+                        <th>Avaliações</th>
+                        <th>Aproveitamento</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr v-for="classTeaching in classTeachings">
-                    <td>{{classTeaching.subject.name}}</td>
-                    <td>
-                        <router-link class="btn btn-primary" :to="routeClassTestList(classTeaching)">
-                            Avaliações
+                    <tr v-for="classTeaching in classTeachings">
+                        <td>{{classTeaching.subject.name}}</td>
+                        <td>
+                            <router-link class="btn btn-primary" :to="routeClassTestList(classTeaching)">
+                                Avaliações
+                            </router-link>
+                        </td>
+                        <td>
+                            <router-link class="btn btn-success" 
+                            :to="{name: 'student.chart.per_subject', params: {class_teaching: classTeaching.id}}">
+                            Aproveitamento
                         </router-link>
                     </td>
                 </tr>
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
+</div>
 </template>
 
 <script type="text/javascript">

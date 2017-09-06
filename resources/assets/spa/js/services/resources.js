@@ -21,9 +21,9 @@ Vue.http.interceptors.push((request, next) => {
         }
         switch (response.status) {
             case 401:
-                JwtToken.token = null;
-                store.commit('auth/unauthenticated');
-                return router.push({name: 'login'});
+            JwtToken.token = null;
+            store.commit('auth/unauthenticated');
+            return router.push({name: 'login'});
         }
     });
 });
@@ -48,7 +48,13 @@ const Student = {
     classInformation: Vue.resource('student/class_informations/{class_information}'),
     classTeaching: Vue.resource('student/class_informations/{class_information}/class_teachings/{class_teaching}'),
     classTest: Vue.resource('student/class_teachings/{class_teaching}/class_tests/{class_test}'),
-    studentClassTest: Vue.resource('student/class_tests/{class_test}/do/{student_class_test}')
+    studentClassTest: Vue.resource('student/class_tests/{class_test}/do/{student_class_test}'),
+    classTestResult: Vue.resource('', {}, {
+        perSubject: {
+            method: 'GET',
+            url: 'student/class_tests/results/per_subject?class_teaching={class_teaching}'
+        }
+    })
 };
 
 export {Teacher, Student};
